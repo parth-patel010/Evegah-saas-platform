@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 export default function Home() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const handleLogin = async () => {
     const res = await fetch("http://localhost:5000/login", {
       method: "Post",
@@ -18,8 +19,11 @@ export default function Home() {
     });
 
     const data = await res.json();
-
-    alert(data.message);
+    if(res.ok){
+      router.push("/dashboard");
+    } else {
+      alert(data.message);
+    }
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
